@@ -1,0 +1,5 @@
+{
+  "python.pipenvPath": "pipenv",
+  "python.linting.enabled": true,
+  "python.formatting.autopep8Path": "autopep8"
+}

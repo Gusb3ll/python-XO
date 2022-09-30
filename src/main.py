@@ -10,7 +10,7 @@ def DrawScreen():
     # Draw grid lines
     t.color("white")
     t.pu()
-    
+
     for y in range(1, 3):
         t.setpos(0, y * 250)
         t.pendown()
@@ -21,7 +21,6 @@ def DrawScreen():
         t.pendown()
         t.goto(x * 250, 750)
         t.penup()
-
 
 
 DrawScreen()
