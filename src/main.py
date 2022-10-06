@@ -2,7 +2,7 @@ import turtle
 from copy import deepcopy
 
 
-class game:
+class Game:
     def __init__(self, def_board) -> None:
         self.screen = turtle.Screen()
         self.gt = turtle.Turtle() # To draw grid lines
@@ -51,10 +51,11 @@ class game:
         # Get x, y position in range [0, 2]
         x = sorted((0, int(x // 250), 2))[1]
         y = sorted((0, int(y // 250), 2))[1]
+        print(st.isdown())
 
         if st.isdown() or board[y][x] != '':
             return
-
+        self.screen.onclick(None)
         board[y][x] = self.player
 
         # Draw symbol on board
@@ -76,6 +77,7 @@ class game:
 
         st.penup()
         self.check_win_draw()
+        self.screen.onclick(self.update_board)
 
     def check_win_draw(self):
         draw = True
@@ -140,4 +142,4 @@ def_board = [
     ['', '', ''],
     ['', '', '']
 ]
-g = game(def_board)
+g = Game(def_board)
