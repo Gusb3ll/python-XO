@@ -5,7 +5,7 @@ def draw_screen():
     # Initialize screen settings
     screen.setup(750, 750, starty=0)
     screen.setworldcoordinates(0, screen.window_height(), screen.window_width(), 0)
-    screen.title("TicTacToe for Sophon hua kuy")
+    screen.title("TicTacToe")
     screen.bgcolor("#346B31")
     gt.pen(shown=False, pendown=False, pencolor="white", pensize=10, speed=0)
     st.pen(pendown=False, pencolor="white", pensize=10, resizemode="user", stretchfactor=(2.5, 2.5))
