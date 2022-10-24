@@ -55,12 +55,12 @@ def update_board(x, y):
         player = 'O'
 
     st.penup()
-    check_win_draw()
     screen.onclick(update_board)
+    check_win_draw()
 
 def check_win_draw():
     global winner
-    draw = True
+    tie = True
     offset_width = screen.window_width() - st.width()
     for i in range(3):
         # Horizontal
@@ -75,7 +75,7 @@ def check_win_draw():
             return
         # Draw
         if '' in board[i]:
-            draw = False
+            tie = False
     # Diagonal (Left-Right)
     if board[0][0] == board[1][1] == board[2][2] != '':
         winner = board[0][0]
@@ -86,8 +86,8 @@ def check_win_draw():
         winner = board[0][0]
         show_winner(offset_width, 0, 0, offset_width)
         return
-    if draw:
-        winner = "draw"
+    if tie:
+        winner = "tie"
         show_winner(0, 0, 0, 0)
         return
 
@@ -100,12 +100,12 @@ def show_winner(x1=0, y1=0, x2=0, y2=0):
         st.penup()
     st.goto(screen.window_width()/2, screen.window_height()/2)
     st.pencolor("black")
-    st.write(f"{winner} WINS" if winner != "draw" else "DRAW", align="center", font=("Arial", 72, "bold"))
+    st.write(f"{winner} WINS" if winner != "tie" else "TIE", align="center", font=("Arial", 72, "bold"))
     st.pencolor("white")
 
     screen.onclick(reset_board)
 
-def reset_board():
+def reset_board(x, y):
     global board, player, winner
     board = [
         ['', '', ''],
@@ -120,8 +120,8 @@ def reset_board():
 
 # Main Program
 screen = turtle.Screen()
-gt = turtle.Turtle() # To draw grid lines
-st = turtle.Turtle() # To draw symbols
+gt = turtle.Turtle() # To tie grid lines
+st = turtle.Turtle() # To tie symbols
 board = [
     ['', '', ''],
     ['', '', ''],
