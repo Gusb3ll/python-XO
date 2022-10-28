@@ -1,5 +1,13 @@
+import json
 import turtle
 
+def updateSave(field, data):
+    with open('../save.json', 'w') as saveFile:
+        save = json.load(saveFile)
+    if (field == "player"):
+        save["player"] = data
+    if (field == "board"):
+        save["board"] = data
 
 def draw_screen():
     # Initialize screen settings
@@ -36,7 +44,6 @@ def update_board(x, y):
         return
     screen.onclick(None)
     board[y][x] = player
-
     # Draw symbol on board
     if player == 'O':
         st.setpos(x * 250 + 225, y * 250 + 125)
@@ -107,6 +114,7 @@ def show_winner(x1=0, y1=0, x2=0, y2=0):
 
 def reset_board(x, y):
     global board, player, winner
+
     board = [
         ['', '', ''],
         ['', '', ''],
@@ -127,6 +135,7 @@ board = [
     ['', '', ''],
     ['', '', '']
 ]
+save["board"] = board
 player = 'O'
 winner = ''
 
