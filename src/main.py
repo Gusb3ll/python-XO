@@ -86,11 +86,11 @@ class View:
         self.model.screen.tracer(True)
 
     def draw_new_symbol(self, shape, x, y): # draw new symbol with animation
-        if shape == 1:
+        if shape == 1: # O
             self.model.st.setpos(x * 250 + 225, y * 250 + 125)
             self.model.st.pendown()
             self.model.st.circle(100, steps=20)
-        elif shape == -1:
+        elif shape == -1: # X
             self.model.st.setpos(x * 250 + 25, y * 250 + 25)
             self.model.st.pendown()
             self.model.st.goto(x * 250 + 225, y * 250 + 225)
@@ -112,12 +112,13 @@ class View:
             self.model.st.penup()
         self.model.st.goto(self.model.screen.window_width()/2, self.model.screen.window_height()/2 + FONT_SIZE/2)
         self.model.st.pencolor("black")
-        self.model.st.write(f"{ 'O' if self.model.winner == 1 else 'X' } WINS" if self.model.winner != 2 else "TIE", align="center", font=("Comic Sans MS", FONT_SIZE, "bold")) # -1 = X wins, 1 = O wins, 2 = tie
+        # -1 = X wins, 1 = O wins, 2 = tie
+        self.model.st.write(f"{ 'O' if self.model.winner == 1 else 'X' } WINS" if self.model.winner != 2 else "TIE", align="center", font=("Comic Sans MS", FONT_SIZE, "bold"))
         self.model.st.pencolor("white")
 
         self.model.screen.onclick(resetFunc)
 
-    def show_hint(self):
+    def show_hint(self): # show ? at the position of the hint
         FONT_SIZE = 72
         self.model.screen.tracer(False)
         self.model.ht.clear()
@@ -134,11 +135,13 @@ class Controller:
         self.model = model
         self.view = view
 
+        # Try to load save
         try:
             model.load_save()
         except FileNotFoundError:
             model.update_save()
         
+        # Draw screen and all symbols
         view.draw_screen()
         view.draw_all_symbols()
         model.screen.onclick(self.update_board)
