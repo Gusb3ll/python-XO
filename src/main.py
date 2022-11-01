@@ -226,6 +226,7 @@ class Controller:
             [0, 0, 0]
         ]
         self.model.st.clear()
+        self.model.ht.clear()
         self.model.winner = 0
         self.model.player = 1
         self.model.update_save()
