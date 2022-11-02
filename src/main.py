@@ -20,6 +20,7 @@ class Model:
         ]
         self.player = 1
         self.winner = 0
+        self.anim = True
 
     def change_player(self):
         self.player = -self.player
@@ -30,6 +31,10 @@ class Model:
             [0, 0, 0],
             [0, 0, 0]
         ]
+
+    def toggle_anim(self, x, y):
+        self.anim = not self.anim
+        print("Animation: " + str(self.anim))
 
     def load_save(self):
         with open('save.json', 'r') as saveFile:
@@ -46,7 +51,7 @@ class Model:
 
 
 class View:
-    def __init__(self, model):
+    def __init__(self, model: Model):
         self.model = model
 
     def draw_screen(self):
@@ -86,6 +91,8 @@ class View:
         self.model.screen.tracer(True)
 
     def draw_new_symbol(self, shape, x, y): # draw new symbol with animation
+        self.model.ht.clear()
+        self.model.screen.tracer(False) if not self.model.anim else None # disable animation
         if shape == 1: # O
             self.model.st.setpos(x * 250 + 225, y * 250 + 125)
             self.model.st.pendown()
@@ -101,6 +108,7 @@ class View:
             self.model.st.penup()
 
         self.model.st.penup()
+        self.model.screen.tracer(True) if not self.model.anim else None
 
     def show_winner(self, x1, y1, x2, y2, resetFunc):
         FONT_SIZE = 72
@@ -131,24 +139,25 @@ class View:
 
 
 class Controller:
-    def __init__(self, model, view):
-        self.model = model
-        self.view = view
+    def __init__(self):
+        self.model = Model()
+        self.view = View(self.model)
 
         # Try to load save
         try:
-            model.load_save()
+            self.model.load_save()
         except FileNotFoundError:
-            model.update_save()
+            self.model.update_save()
         
         # Draw screen and all symbols
-        view.draw_screen()
-        view.draw_all_symbols()
-        model.screen.onclick(self.update_board)
+        self.view.draw_screen()
+        self.view.draw_all_symbols()
+        self.model.screen.onclick(self.update_board)
+        self.model.screen.onclick(self.model.toggle_anim, btn=3) # toggle animation
         self.check_win_tie()
         self.check_hint()
-        model.screen.listen()
-        model.screen.mainloop()
+        self.model.screen.listen()
+        self.model.screen.mainloop()
 
     def update_board(self, x, y):
         # Get x, y position in range [0, 2]
@@ -201,6 +210,9 @@ class Controller:
 
     def check_hint(self):
         self.model.reset_hint()
+        if self.model.winner != 0:
+            return
+            
         for i in range(3):
             # Horizontal
             if abs(sum(self.model.board[i])) == 2:
@@ -235,6 +247,4 @@ class Controller:
 
 # Main Program
 if __name__ == "__main__":
-    model = Model()
-    view = View(model)
-    controller = Controller(model, view)
+    controller = Controller()
